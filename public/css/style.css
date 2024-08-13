@@ -1,0 +1,728 @@
+/* google fonts  */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Orbitron:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Navigation bar  */
+/* Table Styling */
+#appointmentDetailsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+#appointmentDetailsTable th, #appointmentDetailsTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#appointmentDetailsTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #000000;
+    color: white;
+    text-align: center;
+}
+
+#appointmentDetailsTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#appointmentDetailsTable tbody tr:hover {
+    background-color: #ddd;
+}
+
+#appointmentDetailsTable td {
+    text-align: center;
+}
+
+
+.navbar {
+    background-color: #000000;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.navbar-left ul,
+.navbar-right ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.navbar-left li,
+.navbar-right li {
+    display: inline;
+}
+
+.navbar-right li {
+    margin-left: 15px;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 12px;
+}
+
+.navbar a:hover {
+    background-color: #555;
+}
+
+
+.navbar-left a:hover {
+    background-color: transparent;
+}
+
+
+
+/* DASHBOARD CSS  */
+
+
+.container {
+    margin-top: 10%;
+    text-align: center;
+}
+
+.title {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 24px;
+    margin: 10px 0 0;
+}
+
+
+.container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.info {
+    font-size: 18px;
+    font-weight: bolder;
+    margin: 0;
+}
+
+#index {
+    background-color: rgba(82, 80, 80, 0.452);
+}
+
+/* dashboard page ends   */
+
+
+/* login page  */
+
+.login-container,
+.signup-container {
+    width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 50px auto 0;
+}
+
+.login-container input,
+.signup-container input,
+.signup-container select {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+.login-container button,
+.signup-container button {
+    width: 100%;
+    padding: 15px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.login-container button:hover,
+.signup-container button:hover {
+    background-color: #555;
+}
+
+.login-container .text-line,
+.signup-container .text-line {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.login-container .text-line a,
+.signup-container .text-line a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-container .text-line a:hover,
+.signup-container .text-line a:hover {
+    text-decoration: underline;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: large;
+    font-weight: bold;
+    margin-right: 10px;
+    flex: 1;
+}
+
+.form-group input,
+.form-group select {
+    flex: 2;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* login end  */
+
+
+/* G2  */
+
+header {
+    text-align: center;
+    font-family: "Orbitron", sans-serif;
+}
+
+.g2-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.g2-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.g2-column {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.section h3 {
+    margin-top: 0;
+}
+
+.input-group {
+    margin-bottom: 10px;
+    font-family: "Bitter", serif;
+}
+
+.input-group label {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+}
+
+.input-group input,
+.input-group select {
+    width: calc(100% - 170px);
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.input-group select {
+    text-align: center;
+}
+
+.input-group button {
+    padding: 8px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    align-items: center;
+}
+
+
+.g2-appointment-column .input-group {
+    text-align: center;
+}
+
+.g2-appointment-column .input-group button {
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.g2-appointment-column .input-group input[type="date"] {
+    width: calc(100% - 170px);
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.input-group button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    display: block;
+    color: red;
+    margin-top: 5px;
+}
+
+
+
+/* G2 ENDS  */
+
+
+/* G starts  */
+
+.g-center {
+    text-align: center;
+    font-weight: bold;
+}
+
+p {
+    font-family: "Bitter", serif;
+}
+#g-page-container {
+    max-width: 800px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    width: 80%;
+    margin: 50px auto;
+}
+
+#g-user-details .section {
+    margin-bottom: 20px;
+}
+
+#g-user-details .input-group {
+    margin-bottom: 10px;
+    font-family: "Bitter", serif;
+}
+
+#g-user-details .input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#g-user-details .input-group input,
+#g-user-details .input-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#g-user-details .input-group button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#g-user-details .input-group button:hover {
+    background-color: #0056b3;
+}
+
+#g-user-details .error-message {
+    display: block;
+    color: red;
+    margin-top: 5px;
+}
+
+#g-appointmentDetailsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+#g-appointmentDetailsTable th,
+#g-appointmentDetailsTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#g-appointmentDetailsTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #000000;
+    color: white;
+    text-align: center;
+}
+
+#g-appointmentDetailsTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#g-appointmentDetailsTable tbody tr:hover {
+    background-color: #ddd;
+}
+
+#g-appointmentDetailsTable td {
+    text-align: center;
+}
+
+/* G ENDS  */
+
+
+
+
+/* Appointment Page  */
+
+#admin {
+    text-align: center;
+    font-family: "Orbitron", sans-serif;
+}
+
+#appointmentPage {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+#appointmentTitle {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#appointmentForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#dateGroup,
+#timeSlotGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.date-label,
+.time-slot-label {
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.date-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#timeSlotContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.time-slot-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.time-slot-button:hover {
+    background-color: #0056b3;
+}
+
+.time-slot-button.selected {
+    background-color: #28a745;
+}
+
+#submitAppointment {
+    padding: 15px 30px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background-color 0.3s;
+}
+
+#submitAppointment:hover {
+    background-color: #555;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.time-slot-button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: red;
+}
+
+.alert-success {
+    color: green;
+    background-color: #D4EDDA;
+    border-color: #C3E6CB;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+
+/* Examiner Page Styles */
+
+#examinerPage {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    font-family: "Bitter", serif;
+}
+
+#examinerTitle {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#examinerFilter {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#examinerFilter label {
+    font-size: large;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#examinerFilter select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#examinerTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#examinerTable th,
+#examinerTable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+#examinerTable th {
+    background-color: #000;
+    color: white;
+}
+
+#examinerTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#examinerTable tbody tr:hover {
+    background-color: #ddd;
+}
+
+#examinerActions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#examinerActions button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#examinerActions button:hover {
+    background-color: #0056b3;
+}
+
+#driverDetailsSection {
+    margin-top: 20px;
+}
+
+#driverDetailsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+#driverDetailsTable th,
+#driverDetailsTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#driverDetailsTable th {
+    background-color: #000;
+    color: white;
+}
+
+#driverDetailsTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#driverDetailsTable tbody tr:hover {
+    background-color: #ddd;
+}
+
+#examinerComment {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.pass-fail-options {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.pass-fail-options label {
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.pass-fail-options input {
+    margin-right: 5px;
+}
+
+.submit-test-result {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-test-result:hover {
+    background-color: #0056b3;
+}
+
+#error-message {
+    color: red;
+}
+
+.alert-success {
+    color: green;
+    background-color: #D4EDDA;
+    border-color: #C3E6CB;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+
+
+
+/* Add this to your admin-specific CSS file */
+
+#passFailCandidates {
+    margin-top: 40px;
+}
+
+#candidatesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#candidatesTable th,
+#candidatesTable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+#candidatesTable th {
+    background-color: #000;
+    color: white;
+}
+
+#candidatesTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#candidatesTable tbody tr:hover {
+    background-color: #ddd;
+}

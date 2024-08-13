@@ -1,0 +1,43 @@
+<div class="login-container">
+    <h2>Login</h2>
+    <% if (errorMessage) { %>
+        <div class="error-message" style="color: red;"><%= errorMessage %></div>
+    <% } %>
+    <form action="/login" method="POST">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter valid Username " required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter Valid Password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <div class="text-line">
+        Don't have an account? <a href="/signup">Create new account</a>
+    </div>
+</div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        // Clear previous error messages
+        const errorDiv = document.querySelector('.error-message');
+        if (errorDiv) errorDiv.textContent = '';
+
+        // Get the form values
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        // Simple client-side validation
+        if (!username || !password) {
+            event.preventDefault(); // Prevent form submission
+            const errorMessage = 'Username and Password are required.';
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.style.color = 'red';
+            errorElement.textContent = errorMessage;
+            document.querySelector('.login-container').insertBefore(errorElement, document.getElementById('loginForm'));
+        }
+    });
+</script>
+

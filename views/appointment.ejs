@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('pages/header'); -%>
+    <body>
+        <%- include('pages/maindashboardbody'); -%>
+            <h1 id="admin">Welcome Admin!!</h1>
+            <div class="appointment-page" id="appointmentPage">
+                <h1 class="appointment-title" id="appointmentTitle">Create Appointment Slots</h1>
+
+              <!-- success message  -->
+                <div id="successMessage" class="alert alert-success" style="display: none;">
+                    Appointment slots created successfully!
+                </div>
+
+                <form action="/createAppointment" method="post" class="appointment-form" id="appointmentForm">
+                    <div class="form-group" id="dateGroup">
+                        <label for="appointmentDate" class="date-label">Date:</label>
+                        <input type="date" id="appointmentDate" name="date" required class="date-input">
+                    </div>
+
+                    <div class="form-group" id="timeSlotGroup">
+                        <label for="timeSlotContainer" class="time-slot-label">Available Time Slots:</label>
+                        <div id="timeSlotContainer" class="time-slot-container">
+                            
+                            <button type="button" class="time-slot-button" data-time="08:00">08:00</button>
+                            <button type="button" class="time-slot-button" data-time="08:30">08:30</button>
+                            <button type="button" class="time-slot-button" data-time="09:00">09:00</button>
+                            <button type="button" class="time-slot-button" data-time="09:30">09:30</button>
+                            <button type="button" class="time-slot-button" data-time="10:00">10:00</button>
+                            <button type="button" class="time-slot-button" data-time="10:30">10:30</button>
+                            <button type="button" class="time-slot-button" data-time="11:00">11:00</button>
+                            <button type="button" class="time-slot-button" data-time="11:30">11:30</button>
+                            <button type="button" class="time-slot-button" data-time="12:00">12:00</button>
+                            <button type="button" class="time-slot-button" data-time="12:30">12:30</button>
+                            <button type="button" class="time-slot-button" data-time="13:00">13:00</button>
+                            <button type="button" class="time-slot-button" data-time="13:30">13:30</button>
+                            <button type="button" class="time-slot-button" data-time="14:00">14:00</button>
+                            <button type="button" class="time-slot-button" data-time="14:30">14:30</button>
+                            <button type="button" class="time-slot-button" data-time="15:00">15:00</button>
+                            <button type="button" class="time-slot-button" data-time="15:30">15:30</button>
+                            <button type="button" class="time-slot-button" data-time="16:00">16:00</button>
+                            <button type="button" class="time-slot-button" data-time="16:30">16:30</button>
+                
+                        </div>
+                        <input type="hidden" id="selectedTimeSlots" name="slots" required class="hidden-input">
+                    </div>
+
+                    <button type="submit" class="submit-button" id="submitAppointment">Create Slots</button>
+                </form>
+            </div>
+            <div id="passFailCandidates">
+                <h2>Pass/Fail Candidates</h2>
+                <table id="candidatesTable">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Test Type</th>
+                            <th>Status</th>
+                            <th>Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="candidatesTableBody">
+                       
+                    </tbody>
+                </table>
+            </div>
+
+            <script>
+                const selectedSlotsInput = document.getElementById('selectedTimeSlots');
+
+                function handleButtonClick(button) {
+                    const time = button.getAttribute('data-time');
+                    let selectedSlots = selectedSlotsInput.value.split(',').filter(slot => slot);
+
+                    let newSlots = [];
+
+                    for (let i = 0; i < selectedSlots.length; i++) {
+                        if (selectedSlots[i] !== time) {
+                            newSlots.push(selectedSlots[i]);
+                        }
+                    }
+
+                    if (!newSlots.includes(time)) {
+                        newSlots.push(time);
+                    }
+
+                    selectedSlotsInput.value = newSlots.join(',');
+
+                    button.classList.toggle('selected', newSlots.includes(time));
+                }
+
+                document.querySelectorAll('.time-slot-button').forEach(button => {
+                    button.addEventListener('click', () => handleButtonClick(button));
+                });
+
+                document.getElementById('appointmentDate').addEventListener('change', async (event) => {
+                    const date = event.target.value;
+                    try {
+                        const response = await fetch(`/getAppointments?date=${date}`);
+                        const times = await response.text();
+                        const appointments = times.split(',');
+
+                        document.querySelectorAll('.time-slot-button').forEach(button => {
+                            const time = button.getAttribute('data-time');
+                            if (appointments.includes(time)) {
+                                button.disabled = true;
+                                button.classList.add('disabled');
+                            } else {
+                                button.disabled = false;
+                                button.classList.remove('disabled');
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Something went wrong while retrieving appointment!!', error);
+                    }
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const appointmentDateInput = document.getElementById('appointmentDate');
+                    const today = new Date().toISOString().split('T')[0];
+                    appointmentDateInput.setAttribute('min', today);
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const params = new URLSearchParams(window.location.search);
+                    if (params.has('success')) {
+                        const successMessage = document.getElementById('successMessage');
+                        successMessage.style.display = 'block';
+                        setTimeout(() => {
+                            successMessage.style.display = 'none';
+                        }, 3000);  
+                    }
+                });
+
+                async function fetchPassFailCandidates() {
+                    try {
+                        const response = await fetch('/getPassFailCandidates');
+                        const candidates = await response.json();
+                        const tableBody = document.getElementById('candidatesTableBody');
+                        tableBody.innerHTML = '';
+
+                        candidates.forEach(candidate => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${candidate.firstName}</td>
+                                <td>${candidate.lastName}</td>
+                                <td>${candidate.testType}</td>
+                                <td>${candidate.passedTest ? 'Pass' : 'Fail'}</td>
+                                <td>${candidate.comment || 'No comment'}</td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    } catch (error) {
+                        console.error('Error fetching candidates:', error);
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', fetchPassFailCandidates);
+            </script>
+    </body>
+</html>

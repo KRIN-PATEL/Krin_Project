@@ -1,0 +1,163 @@
+<div id="g-page-container">
+    <% if (error) { %>
+        <div style="color: red; margin-bottom: 20px;"><%= error %></div>
+    <% } %>
+
+    <h2>User & Car Details</h2>
+    <hr>
+    <div id="g-user-details">
+        <h2>User Information</h2>
+        <% if (user) { %>
+            <form id="g-personalCarInfoForm" action="/g" method="POST">
+                <div class="section">
+                    <h3>Personal Information</h3>
+                    <div class="input-group">
+                        <label for="g-first-name">First Name:</label>
+                        <input type="text" id="g-first-name" name="firstName" value="<%= user.firstName %>" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label for="g-last-name">Last Name:</label>
+                        <input type="text" id="g-last-name" name="lastName" value="<%= user.lastName %>" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label for="g-license-number">License Number:</label>
+                        <input type="text" id="g-license-number" name="licenceNumber" pattern="[A-Za-z0-9]{8}" minlength="8" maxlength="8" value="<%= user.licenceNumber %>" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label for="g-dob">DOB:</label>
+                        <input type="date" id="g-dob" name="dob" value="<%= user.dob %>" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label for="g-age">Age:</label>
+                        <input type="number" id="g-age" name="age" value="<%= user.age %>" readonly>
+                    </div>
+                </div>
+                <div class="section">
+                    <h3>Car Information</h3>
+                    <div class="input-group">
+                        <label for="g-make">Make:</label>
+                        <input type="text" id="g-make" name="make" value="<%= user.car_details.make %>">
+                    </div>
+                    <div class="input-group">
+                        <label for="g-model">Model:</label>
+                        <input type="text" id="g-model" name="model" value="<%= user.car_details.model %>">
+                    </div>
+                    <div class="input-group">
+                        <label for="g-year">Year:</label>
+                        <input type="number" id="g-year" name="year" value="<%= user.car_details.year %>">
+                    </div>
+                    <div class="input-group">
+                        <label for="g-plate-number">Plate Number:</label>
+                        <input type="text" id="g-plate-number" name="platno" value="<%= user.car_details.platno %>">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <button type="submit">Save Changes</button>
+                </div>
+            </form>
+        <% } else if (error) { %>
+            <p style="color: red;"><%= error %></p>
+        <% } %>
+    </div>
+
+    <h2>Appointment Booking</h2>
+    <% if (user && !user.passedG2Test) { %>
+        <p style="color:red;">You are not eligible for the G Test. You must pass the G2 test first.</p>
+    <% } else if (user && user.passedG2Test) { %>
+       
+        <% if (user.passedGTest) { %>
+            <p style="color:green;">You have passed the G test!!</p>
+        <% } else if (!user.gAppointment) { %> 
+            <form id="g-appointmentForm" action="/g" method="GET">
+                <div class="input-group">
+                    <label for="g-appointment-date">Select Date:</label>
+                    <input type="date" id="g-appointment-date" name="date" value="<%= date || '' %>"  min="<%= new Date().toISOString().split('T')[0] %>"><br><br><br>
+                    <button type="submit">Show Available Slots</button>
+                </div>
+            </form>
+
+            <% if (date) { %>
+                <form action="/g" method="POST">
+                    <div class="input-group">
+                        <label for="g-available-slots">Available Slots:</label>
+                        <select id="g-available-slots" name="slot" required>
+                            <option value="">Select a time slot</option>
+                            <% slots.forEach(function(slot) { %>
+                                <option value="<%= slot.time %>">
+                                    <%= slot.time %>
+                                </option>
+                            <% }); %>
+                        </select>
+                        <input type="hidden" name="appointmentDate" value="<%= date %>"><br><br><br>
+                        <button type="submit" name="action" value="book">Book Appointment</button>
+                    </div>
+                </form>
+            <% } %>
+        <% } else { %>
+           
+            <h3>Current G Test Appointment</h3>
+            <table id="g-appointmentDetailsTable" border="1" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><%= user.gAppointment.date %></td>
+                        <td><%= user.gAppointment.time %></td>
+                    </tr>
+                </tbody>
+            </table>
+        <% } %>
+    <% } %>
+
+    <h2>Test Results</h2>
+    <% if (user && user.passedGTest !== null && user.gAppointment === null) { %> 
+        <div class="section">
+            <h3>G Test Result</h3>
+            <p><strong>Status:</strong> <%= user.passedGTest ? 'Pass' : 'Fail' %></p>
+            <p><strong>Comment:</strong> <%= user.comment || 'No comment' %></p>
+        </div>
+    <% } %>
+</div>
+
+<script>
+    document.getElementById('g-dob').addEventListener('change', function() {
+        const dob = new Date(this.value);
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const m = today.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+        document.getElementById('g-age').value = age;
+
+        const ageError = document.getElementById('g-age-error');
+        const submitButton = document.querySelector('#g-personalCarInfoForm button[type="submit"]');
+        if (age < 18) {
+            ageError.style.display = 'block';
+            submitButton.disabled = true;
+        } else {
+            ageError.style.display = 'none';
+            submitButton.disabled = false;
+        }
+    });
+
+
+    document.getElementById('g-appointmentForm').addEventListener('submit', function(event) {
+        const requiredFields = ['g-first-name', 'g-last-name', 'g-license-number', 'g-dob', 'g-age', 'g-make', 'g-model', 'g-year', 'g-plate-number'];
+        let allFilled = true;
+        requiredFields.forEach(function(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (!field || !field.value.trim()) {
+                allFilled = false;
+            }
+        });
+        if (!allFilled) {
+            event.preventDefault();
+            document.getElementById('form-error-message').style.display = 'block';
+        }
+    });
+</script>

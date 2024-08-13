@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('pages/header'); -%>
+<body>
+    <%- include('pages/maindashboardbody'); -%>
+    <div id="examinerPage">
+        <h1 id="examinerTitle">Examiner Dashboard</h1>
+
+        <div id="examinerFilter">
+            <label for="testType">Filter by Test Type:</label>
+            <select id="testType" onchange="filterAppointments()">
+                <option value="">All</option>
+                <option value="G">G</option>
+                <option value="G2">G2</option>
+            </select>
+        </div>
+
+        <table id="examinerTable">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Test Type</th>
+                    <th>Appointment Date</th>
+                    <th>Appointment Time</th>
+                    <th>Comment</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentsTableBody">
+                <!-- Appointments will be populated here via JavaScript -->
+            </tbody>
+        </table>
+
+        <div id="examinerActions">
+            <button onclick="showDriverDetails()" disabled id="viewDriverDetailsButton">View Driver Details</button>
+        </div>
+
+        <div id="driverDetailsSection" style="display: none;">
+            <h2>Driver Details</h2>
+            <table id="driverDetailsTable">
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td id="driverName"></td>
+                    </tr>
+                    <tr>
+                        <th>Car</th>
+                        <td id="carDetails"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <textarea id="examinerComment" placeholder="Add comment about the drive test"></textarea>
+            <div class="pass-fail-options">
+                <label>
+                    <input type="radio" name="passFail" value="pass"> Pass
+                </label>
+                <label>
+                    <input type="radio" name="passFail" value="fail"> Fail
+                </label>
+            </div>
+            <button class="submit-test-result" onclick="submitTestResult()">Submit Test Result</button>
+        </div>
+
+        <div id="examinerErrorMessage" class="error-message" style="display: none;">
+            <!-- Error messages will be displayed here -->
+        </div>
+
+        <div id="examinerSuccessMessage" class="alert-success" style="display: none;">
+            <!-- Success messages will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        let selectedDriverId = null;
+
+        async function fetchAppointments(testType = '') {
+            try {
+                const response = await fetch(`/getAppointmentsByTestType?testType=${testType}`);
+                const appointments = await response.json();
+                const tableBody = document.getElementById('appointmentsTableBody');
+                tableBody.innerHTML = '';
+
+                appointments.forEach(user => {
+                    const isTestComplete = user.passedTest !== null;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <input type="radio" name="selectedDriver" value="${user._id}" 
+                            onclick="selectDriver('${user._id}', '${user.firstName}', '${user.lastName}', '${user.car_details.make}', 
+                            '${user.car_details.model}', '${user.car_details.year}', '${user.car_details.platno}')" 
+                            ${isTestComplete ? 'disabled' : ''}>
+                        </td>
+                        <td>${user.firstName}</td>
+                        <td>${user.lastName}</td>
+                        <td>${user.testType}</td>
+                        <td>${user.testType === 'G2' ? (user.g2Appointment?.date || 'N/A') : (user.gAppointment?.date || 'N/A')}</td>
+                        <td>${user.testType === 'G2' ? (user.g2Appointment?.time || 'N/A') : (user.gAppointment?.time || 'N/A')}</td>
+                        <td>${user.comment || 'No comment'}</td>
+                        <td>${isTestComplete ? (user.passedTest ? 'Pass' : 'Fail') : 'Pending'}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                const errorMessage = document.getElementById('examinerErrorMessage');
+                errorMessage.textContent = 'Failed to fetch appointments';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        function filterAppointments() {
+            const testType = document.getElementById('testType').value;
+            fetchAppointments(testType);
+        }
+
+        function selectDriver(id, firstName, lastName, carMake, carModel, carYear, carPlatNo) {
+            selectedDriverId = id;
+            document.getElementById('viewDriverDetailsButton').disabled = false;
+            document.getElementById('driverName').textContent = `${firstName} ${lastName}`;
+            document.getElementById('carDetails').textContent = `${carMake} ${carModel} (${carYear}), Plate No: ${carPlatNo}`;
+        }
+
+        function showDriverDetails() {
+            document.getElementById('driverDetailsSection').style.display = 'block';
+        }
+
+        async function submitTestResult() {
+            const comment = document.getElementById('examinerComment').value;
+            const passFail = document.querySelector('input[name="passFail"]:checked').value;
+
+            try {
+                const response = await fetch(`/updateDriverTestResult`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        driverId: selectedDriverId,
+                        comment,
+                        passedTest: passFail === 'pass',
+                    }),
+                });
+
+                if (response.ok) {
+                    const successMessage = document.getElementById('examinerSuccessMessage');
+                    successMessage.textContent = 'Test result updated successfully';
+                    successMessage.style.display = 'block';
+                    setTimeout(() => successMessage.style.display = 'none', 3000);
+                    
+                    // Refresh table data to show updated comments and status
+                    fetchAppointments();
+                    document.getElementById('driverDetailsSection').style.display = 'none';
+                } else {
+                    const errorMessage = document.getElementById('examinerErrorMessage');
+                    errorMessage.textContent = 'Failed to update test result';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error updating test result:', error);
+                const errorMessage = document.getElementById('examinerErrorMessage');
+                errorMessage.textContent = 'Failed to update test result';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        // Initial fetch of all appointments
+        fetchAppointments();
+    </script>
+</body>
+</html>
